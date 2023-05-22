@@ -10,15 +10,11 @@ drone = tello.Tello()
 drone.connect()
 
 #camera
-import KeyPressModule as kp
 import cv2
 import time 
 
-kp.init()
 global img
 drone.streamon()
-
-
 
 
 def controller(starttime,stbat, now):
@@ -69,7 +65,7 @@ def controller(starttime,stbat, now):
     return [lr,ud,bf,yv]
 
 def run():
-    print(f'Battery: {drone.get_battery()} Temp: {drone.get_temperature()}')
+    print(f'Battery: {drone.get_battery()} Temp: {drone.get_temperature()}') #start msg
     sleep(1)
     stbat = drone.get_battery() #start battery
     now = datetime.now() #date time for log
@@ -78,16 +74,16 @@ def run():
         if press('enter'): #kill switch
             drone.land()
             break
-        try:
-            frame_read = drone.get_frame_read().frame
-            #myframe = frame_read.frame
-            img = cv2.resize(frame_read, (400, 400))
-
-            #display image
-            cv2.imshow("MyResult", img)
+        vals = controller(starttime,stbat,now)
+        drone.send_rc_control(vals[0],vals[1],vals[2],vals[3])
+        try: #img
+            img = drone.get_frame_read().frame
+            img = cv2.resize(img, (360,240))
+            cv2.imshow("Image", img)
+            cv2.waitKey(1)
         except:
-            vals = controller(starttime,stbat,now)
-            drone.send_rc_control(vals[0],vals[1],vals[2],vals[3])
+            print('Error')
+            pass
     #log 
     doc = open('log.txt','a')
     doc.write(f'{now.strftime("%m/%d/%Y %H:%M:%S")} Flight Time: {(click()-starttime)/1000000000} Battery: {drone.get_battery()} Battery Loss:{drone.get_battery()-stbat}\n')
