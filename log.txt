@@ -27,3 +27,4 @@
 05/22/2023 09:35:12 Flight Time: 59.0034168 Battery: 70 Battery Loss:-8
 05/22/2023 09:38:26 Flight Time: 5.5625969 Battery: 60 Battery Loss:-1
 05/22/2023 09:40:38 Flight Time: 118.8854378 Battery: 45 Battery Loss:-13
+05/23/2023 09:34:22 Flight Time: 16.3682206 Battery: 44 Battery Loss:0
